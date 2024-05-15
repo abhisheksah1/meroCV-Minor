@@ -12,6 +12,7 @@ import registerRoutes from "./routes/user.routes.js";
 import cvRoutes from "./controllers/cv.controllers.js"
 import contactRoutes from "./routes/contact.routes.js"
 import subscribeRoute from"./routes/sunscribe.routes.js"
+import adminRoutes from "./routes/admin.routes.js"
 
 
 
@@ -32,6 +33,7 @@ app.use("/api/user", registerRoutes);
 app.use("/api/cv", cvRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/subscribe", subscribeRoute);
+app.use("/api/admin", adminRoutes);
 
 
 

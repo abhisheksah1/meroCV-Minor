@@ -11,6 +11,8 @@ import nodemailer from "nodemailer";
 export async function register(req, res) {
   try {
     const { fullName, email, password, username, confirmPassword } = req.body;
+
+    // Validate user input
     const validateRegister = await validation({
       fullName,
       email,
@@ -18,13 +20,16 @@ export async function register(req, res) {
       username,
       confirmPassword,
     });
+
     if (validateRegister.error) {
       return res.status(400).json({ message: validateRegister.message });
     }
 
+    // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Create a new user object
     const newUser = new User({
       fullName,
       email,
@@ -33,25 +38,117 @@ export async function register(req, res) {
       confirmPassword,
     });
 
+    // Save the new user to the database
     const savedUser = await newUser.save();
-    res.status(200).json({
-      message: "User created successfully",
-      user: {
-        id: savedUser._id,
-        email: savedUser.email,
-        fullName: savedUser.fullName,
-        username: savedUser.username,
-        createdAt: new Date(savedUser.createdAt).toString(),
-        updatedAt: new Date(savedUser.updatedAt).toString(),
+
+    // Create a transporter for sending emails
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD_APP_EMAIL,
       },
     });
+
+    // Email configuration
+    const mailOptions = {
+      from: "MeroCV <support@merocv.com>",
+      to: savedUser.email,
+      subject: "Registration Successful",
+      html: ` <html>
+        <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f4;
+              padding: 20px;
+              margin: 0;
+            }
+            .container {
+              max-width: 600px; 
+              margin: 0 auto;
+              background-color: #ffffff;
+              border-radius: 5px;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              padding: 40px
+            }
+            h1 {
+              color: #333333;
+              text-align: center;
+              margin-bottom: 20px;
+            }
+            p {
+              color: #666666;
+              font-size: 16px;
+              line-height: 1.6;
+              margin-bottom: 15px;
+            }
+            .button {
+              display: inline-block;
+              padding: 12px 24px;
+              background-color: #007bff;
+              color: #ffffff;
+              text-decoration: none;
+              border-radius: 5px;
+              text-align: center;
+              transition: background-color 0.3s ease;
+            }
+            .button:hover {
+              background-color: #0056b3;
+            }
+            .button-container {
+              text-align: center;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>Welcome to MeroCV!</h1>
+            <p>Your account has been successfully created. You can now log in and start using our services.</p>
+            <p>To get started, create your professional resume:</p>
+            <ol>
+              <li>Login to your account.</li>
+              <li>Click on the "Create new Resume" option.</li>
+              <li>Follow the steps to enter your information and customize your resume.</li>
+            </ol>
+            <p>If you have any questions or need assistance, feel free to contact our support team.</p>
+            <div class="button-container">
+              <a href="mailto:merocv4@gmail.com" class="button">Contact via Gmail</a>
+            </div>
+          </div>
+        </body>
+      </html>
+      `,
+    };
+    
+    
+    // Send the registration email
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.error("Error sending email:", err);
+        return res.status(500).json({ message: "Error sending email" });
+      }
+      console.log("Registration successful email sent to:", savedUser.email);
+
+      // Respond with success message and user details
+      res.status(200).json({
+        message: "User created successfully",
+        user: {
+          id: savedUser._id,
+          email: savedUser.email,
+          fullName: savedUser.fullName,
+          username: savedUser.username,
+          createdAt: new Date(savedUser.createdAt).toString(),
+          updatedAt: new Date(savedUser.updatedAt).toString(),
+        },
+      });
+    });
   } catch (error) {
-    console.error(error.message);
+    console.error("Error registering user:", error);
     // Send an error response
     return res.status(500).json({ message: "Server Error" });
   }
 }
-
 //login validate
 
 export async function login(req, res) {
@@ -117,6 +214,7 @@ export async function forgetPassword(req, res) {
   try {
     const { email } = req.body;
 
+
     // Find the user by email
     const user = await User.findOne({ email });
 
@@ -128,8 +226,26 @@ export async function forgetPassword(req, res) {
     // Generate a unique JWT token for the user that contains the user's id
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "5m", // Set the expiration time to 5 minutes
+      
     });
 
+    // Email configuration
+    const mailOptions = {
+      from: "MeroCV <support@merocv.com>",
+      to: user.email,
+      subject: "Reset Password",
+      html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+        <h1 style="color: #007bff; text-align: center; margin-bottom: 30px;">Reset Your Password</h1>
+        <p>Hello,</p>
+        <p>We received a request to reset your password. If this was you, please click on the following link to reset your password:</p>
+        <p style="text-align: center; margin-bottom: 20px;"><a href="http://localhost:5173/reset-password/${token}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px;">Reset Password</a></p>
+        <p style="margin-bottom: 10px;">The link will expire in 5 minutes.</p>
+        <p>If you didn't request a password reset, please ignore this email.</p>
+        <p style="margin-top: 30px; font-size: 0.8em; color: #666666; text-align: center;">Thank you!</p>
+        <p style="font-size: 0.8em; color: #666666; text-align: center;">MeroCV Support Team</p>
+      </div>`
+    };
+    
     // Create a transporter for sending emails
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -138,18 +254,6 @@ export async function forgetPassword(req, res) {
         pass: process.env.PASSWORD_APP_EMAIL,
       },
     });
-
-    // Email configuration
-    const mailOptions = {
-      from: "MeroCV  <support@merocv.com>",
-      to: user.email,
-      subject: "Reset Password",
-      html: `<h1>Reset Your Password</h1>
-      <p>Click on the following link to reset your password:</p>
-      <a href="http://localhost:5173/reset-password/${token}">http://localhost:5173/reset-password/${token}</a>
-      <p>The link will expire in 5 minutes.</p>
-      <p>If you didn't request a password reset, please ignore this email.</p>`,
-    };
 
     // Send the email
     transporter.sendMail(mailOptions, async (err, info) => {
@@ -172,6 +276,7 @@ export async function forgetPassword(req, res) {
   }
 }
 
+
 //reset-password logic
 
 export async function resetPassword(req, res) {
@@ -187,7 +292,7 @@ export async function resetPassword(req, res) {
     // find the user with the id from the token
     const user = await User.findOne({ _id: decodedToken.userId });
     if (!user) {
-      return res.status(401).send({ message: "no user found" });
+      return res.status(401).send({ message: "User not Found" });
     }
 
     // Hash the new password

@@ -32,10 +32,11 @@ function useSignin() {
 
       // Parse the response as JSON
       const data = await response.json();
-
+    
       // If the response status is OK, set the user token in localStorage and show a success toast
       if (response.ok) {
         localStorage.setItem("user-token", data.user.token);
+        localStorage.setItem("userId", data.user.id);
         toast.success("Login successful");
 
         // Redirect to the home page after a delay of 1000 milliseconds

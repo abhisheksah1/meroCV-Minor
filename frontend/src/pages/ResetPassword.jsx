@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 function ResetPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { token } = useParams();
 
   const handleSubmit = async (e) => {
@@ -39,6 +41,7 @@ function ResetPassword() {
       console.log(error);
     }
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex justify-center items-center min-h-[93vh] overflow-hidden">
@@ -61,13 +64,27 @@ function ResetPassword() {
                 />
               </svg>
               <input
-                type="password"
+                type={showNewPassword ? "text" : "password"}
                 className="grow"
                 placeholder="New Password"
                 name="newPassword"
+                value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+              >
+                {showNewPassword ? (
+                  <i className="fa fa-eye text-2xl" aria-hidden="true"></i>
+                ) : (
+                  <i
+                    className="fa fa-eye-slash text-2xl"
+                    aria-hidden="true"
+                  ></i>
+                )}
+              </button>
             </label>
             <label className="input input-bordered flex items-center gap-2">
               <svg
@@ -83,13 +100,27 @@ function ResetPassword() {
                 />
               </svg>
               <input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 className="grow"
                 placeholder="Confirm New Password"
                 name="confirmPassword"
+                value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? (
+                  <i className="fa fa-eye text-2xl" aria-hidden="true"></i>
+                ) : (
+                  <i
+                    className="fa fa-eye-slash text-2xl"
+                    aria-hidden="true"
+                  ></i>
+                )}
+              </button>
             </label>
           </div>
           <div className="flex items-center justify-between pt-7">

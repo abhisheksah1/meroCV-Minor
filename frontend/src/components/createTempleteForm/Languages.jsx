@@ -16,18 +16,6 @@ function Languages({ languages, onLanguagesChange }) {
             />
           </label>
         </div>
-        <div className="w-full lg:w-auto">
-          <label className="input input-bordered flex items-center gap-2">
-            <input
-              type="text"
-              className="w-full lg:w-auto"
-              placeholder="Proficiency"
-              name="proficiency"
-              value={languages.proficiency}
-              onChange={(e) => onLanguagesChange("proficiency", e.target.value)}
-            />
-          </label>
-        </div>
       </div>
     </div>
   );

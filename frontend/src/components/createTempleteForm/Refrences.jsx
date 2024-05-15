@@ -8,6 +8,7 @@ function References({ references, onReferencesChange }) {
           <div className="w-full lg:w-auto">
             <label className="input input-bordered flex items-center gap-2">
               <input
+              required
                 type="text"
                 className="w-full lg:w-auto"
                 placeholder="Name"
@@ -20,6 +21,7 @@ function References({ references, onReferencesChange }) {
           <div className="w-full lg:w-auto">
             <label className="input input-bordered flex items-center gap-2">
               <input
+              required
                 type="text"
                 className="w-full lg:w-auto"
                 placeholder="Position"
@@ -32,6 +34,7 @@ function References({ references, onReferencesChange }) {
           <div className="w-full lg:w-auto">
             <label className="input input-bordered flex items-center gap-2">
               <input
+              required
                 type="text"
                 className="w-full lg:w-auto"
                 placeholder="Company"
@@ -44,12 +47,26 @@ function References({ references, onReferencesChange }) {
           <div className="w-full lg:w-auto">
             <label className="input input-bordered flex items-center gap-2">
               <input
+              required
                 type="text"
                 className="w-full lg:w-auto"
                 placeholder="Contact"
                 name="contact"
                 value={references.contact}
                 onChange={(e) => onReferencesChange("contact", e.target.value)}
+              />
+            </label>
+          </div>
+          <div className="w-full lg:w-auto">
+            <label className="input input-bordered flex items-center gap-2">
+              <input
+              required
+                type="email"
+                className="w-full lg:w-auto"
+                placeholder="Email"
+                name="email"
+                value={references.email}
+                onChange={(e) => onReferencesChange("email", e.target.value)}
               />
             </label>
           </div>

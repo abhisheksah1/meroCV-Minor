@@ -1,5 +1,6 @@
 import express from "express";
 import Cv from "../models/cv.model.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -13,21 +14,37 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Get a single CV by ID
-router.get("/:id", getCv, (req, res) => {
-  res.json(res.cv);
+router.get("/getRecent", async (req, res) => {
+  try {
+    const userId = String(req.query.userId); // Convert to string explicitly
+    if (
+      !userId ||
+      userId.trim() === "" ||
+      !mongoose.Types.ObjectId.isValid(userId)
+    ) {
+      return res.status(404).json({ message: "userId is Invalid" });
+    }
+    const recentCv = await Cv.findOne({ userId }).sort({ _id: -1 }); // Sort by _id in descending order
+    if (!recentCv) {
+      return res.status(404).json({ message: "No recent CV found" });
+    }
+
+    res.json(recentCv);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 // Create a new CV
 router.post("/create", async (req, res) => {
   const cv = new Cv({
+    userId: req.body.userId,
     aboutInfo: req.body.aboutInfo || {},
     workExperience: req.body.workExperience || [],
     education: req.body.education || [],
     skills: req.body.skills || [],
-    languages: req.body.languages || {},
+    languages: req.body.languages || [],
     projects: req.body.projects || [],
-    certifications: req.body.certifications || [],
     references: req.body.references || [],
   });
 
@@ -38,41 +55,6 @@ router.post("/create", async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-
-// Update a CV by ID
-// router.patch("/:id", getCv, async (req, res) => {
-//   if (req.body.aboutInfo!= null) {
-//     res.cv.aboutInfo = req.body.aboutInfo;
-//   }
-//   if (req.body.workExperience!= null) {
-//     res.cv.workExperience = req.body.workExperience;
-//   }
-//   if (req.body.education!= null) {
-//     res.cv.education = req.body.education;
-//   }
-//   if (req.body.skills!= null) {
-//     res.cv.skills = req.body.skills;
-//   }
-//   if (req.body.languages!= null) {
-//     res.cv.languages = req.body.languages;
-//   }
-//   if (req.body.projects!= null) {
-//     res.cv.projects = req.body.projects;
-//   }
-//   if (req.body.certifications!= null) {
-//     res.cv.certifications = req.body.certifications;
-//   }
-//   if (req.body.references!= null) {
-//     res.cv.references = req.body.references;
-//   }
-
-//   try {
-//     const updatedCv = await res.cv.save();
-//     res.json(updatedCv);
-//   } catch (err) {
-//     res.status(400).json({ message: err.message });
-//   }
-// });
 
 // Middleware to get CV by ID
 async function getCv(req, res, next) {

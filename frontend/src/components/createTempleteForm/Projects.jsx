@@ -7,6 +7,7 @@ function Projects({ projects, onProjectsChange }) {
         <div className="w-full lg:w-auto">
           <label className="input input-bordered flex items-center gap-2">
             <input
+           
               type="text"
               className="w-full lg:w-auto"
               placeholder="Name"
@@ -19,6 +20,7 @@ function Projects({ projects, onProjectsChange }) {
         <div className="w-full lg:w-auto">
           <label className="input input-bordered flex items-center gap-2">
             <input
+          
               type="text"
               className="w-full lg:w-auto"
               placeholder="Description"
@@ -31,7 +33,8 @@ function Projects({ projects, onProjectsChange }) {
         <div className="w-full lg:w-auto">
           <label className="input input-bordered flex items-center gap-2">
             <input
-              type="date"
+            
+              type="text"
               className="w-full lg:w-auto"
               placeholder="Start Date"
               name="startDate"
@@ -43,7 +46,8 @@ function Projects({ projects, onProjectsChange }) {
         <div className="w-full lg:w-auto">
           <label className="input input-bordered flex items-center gap-2">
             <input
-              type="date"
+            
+              type="text"
               className="w-full lg:w-auto"
               placeholder="End Date"
               name="endDate"

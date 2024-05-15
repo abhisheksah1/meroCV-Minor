@@ -1,0 +1,65 @@
+.animate-slideDown {
+    animation: slideDown 0.5s ease-out forwards;
+  }
+  
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+
+  @media (max-width: 768px) {
+    .max-w-xl {
+      max-width: 100%;
+    }
+  
+    .input {
+      width: 100%;
+    }
+  
+    .btn {
+      width: 100%;
+    }
+  
+    .form-checkbox-label {
+      font-size: 14px;
+    }
+  
+    .flex-col {
+      flex-direction: column;
+    }
+  
+    .justify-center {
+      justify-content: center;
+    }
+  
+    .justify-between {
+      justify-content: space-between;
+    }
+  
+    .pb-10 {
+      padding-bottom: 1rem;
+    }
+  
+    .pt-10 {
+      padding-top: 1rem;
+    }
+  
+    .gap-5 {
+      gap: 1.25rem;
+    }
+  
+    .gap-4 {
+      gap: 1rem;
+    }
+  
+    .gap-2 {
+      gap: 0.5rem;
+    }
+  }
