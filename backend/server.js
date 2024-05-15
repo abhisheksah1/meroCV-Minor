@@ -13,6 +13,10 @@ import cvRoutes from "./controllers/cv.controllers.js"
 import contactRoutes from "./routes/contact.routes.js"
 import subscribeRoute from"./routes/sunscribe.routes.js"
 import adminRoutes from "./routes/admin.routes.js"
+<<<<<<< HEAD
+=======
+
+>>>>>>> 15a2524b3fa4966c4817fe7757e806ffb5c8fbc4
 
 
 
