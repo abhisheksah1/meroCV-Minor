@@ -1,9 +1,9 @@
 import User from "../models/user.model.js";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 import validation from "./validation/validation.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import bycrypt from "bcrypt";
+import bycrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 
 // register validate

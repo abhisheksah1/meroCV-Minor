@@ -1,6 +1,6 @@
 import Admin from "../models/admin.model.js";
 import validation from "./validation/adminValidation.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export async function adminRegister(req, res) {
