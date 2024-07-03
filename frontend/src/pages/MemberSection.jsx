@@ -2,6 +2,7 @@ import React from "react";
 import img1 from "../assets/abhishek.jpg";
 import img2 from "../assets/priyanka.png";
 import img3 from "../assets/hritik.jpg";
+import img4 from "../assets/rahul.jpg";
 
 import MemberSection1 from "./MemberSection1";
 
@@ -13,12 +14,10 @@ export default function MemberSection() {
           People who made it successful
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-gray-600 md:text-xl">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam
-          reiciendis a vel error explicabo voluptatum nihil possimus veritatis
-          eos culpa.
+          
         </p>
       </div>
-      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8  grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <MemberSection1
           imgLink={img1}
           memberName={"Abhishek Kumar Sah"}
@@ -26,7 +25,6 @@ export default function MemberSection() {
           facebookLink={"https://www.facebook.com/Abheesah12?mibextid=ZbWKwL"}
           instaLink={
             "https://www.instagram.com/avi_sake01?igsh=MWxyMDlqb29wMGdkMg%3D%3D&utm_source=qr"
-            
           }
           aboutMember={" Founder of MeroCV website. "}
         />
@@ -34,7 +32,9 @@ export default function MemberSection() {
           imgLink={img2}
           memberName={"Priyanka Kumari "}
           memberPosition={"Helper"}
-          facebookLink={"https://www.facebook.com/profile.php?id=100055496693741"}
+          facebookLink={
+            "https://www.facebook.com/profile.php?id=100055496693741"
+          }
           instaLink={"https://www.instagram.com/priyankasah446/"}
           aboutMember={"Helping our Team to improve"}
         />
@@ -47,13 +47,12 @@ export default function MemberSection() {
           aboutMember={"Managing the project"}
         />
         <MemberSection1
-          
+          imgLink={img4}
           memberName={"Rahul Jaiswal"}
           memberPosition={"Designer & Contributor"}
           facebookLink={"https://www.facebook.com/rahul.jaishwal.9235"}
           instaLink={"https://www.instagram.com/rahul_jaiswal4123/"}
           aboutMember={" Design of MeroCV "}
-          
         />
       </div>
     </div>

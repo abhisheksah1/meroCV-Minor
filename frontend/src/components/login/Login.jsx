@@ -1,51 +1,50 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useLoginContext } from "../../context/useContext";
 import useSignin from "../../hooks/useSignin";
 import "./login.style.css";
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
-  const { showLogin, setShowLogin, setShowRegister, setShowReset } =
-    useLoginContext();
-  const { loading, signin } = useSignin();
+const [email, setEmail] = useState(""); // State for storing email input
+const [password, setPassword] = useState(""); // State for storing password input
+const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+const [rememberMe, setRememberMe] = useState(false); // State for remembering user login
+const { showLogin, setShowLogin, setShowRegister, setShowReset } = useLoginContext(); // Destructuring values from login context
+const { loading, signin } = useSignin(); // Destructuring values from signin context
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+const toggleShowPassword = () => {
+  setShowPassword(!showPassword); // Toggle the state to show/hide the password
+};
 
-  const handleShow = () => {
-    setShowLogin(false);
-    setShowRegister(true);
-  };
+const handleShow = () => {
+  setShowLogin(false); // Hide the login form
+  setShowRegister(true); // Show the registration form
+};
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (loading === true) {
-      return;
-    }
-    await signin({
-      email: email,
-      password: password,
-    });
+const handleSubmit = async (e) => {
+  e.preventDefault(); // Prevent default form submission behavior
+  if (loading === true) { // If already loading, return early to prevent duplicate submissions
+    return;
+  }
+  await signin({ // Call the signin function with the email and password
+    email: email,
+    password: password,
+  });
 
-    setInput({
-      email: "",
-      password: "",
-    });
-  };
+  setInput({ // Reset the input fields after submission
+    email: "",
+    password: "",
+  });
+};
 
-  const handleRememberMeChange = () => {
-    setRememberMe(!rememberMe);
-  };
+const handleRememberMeChange = () => {
+  setRememberMe(!rememberMe); // Toggle the state for remembering user login
+};
 
-  const resetHandler = () => {
-    setShowLogin(false);
-    setShowRegister(false);
-    setShowReset(true);
-  };
+const resetHandler = () => {
+  setShowLogin(false); // Hide the login form
+  setShowRegister(false); // Hide the registration form
+  setShowReset(true); // Show the password reset form
+};
+
 
   return (
     <div className="relative z-50">

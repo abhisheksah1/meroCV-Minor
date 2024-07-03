@@ -46,15 +46,11 @@ function Contact() {
       <div className="relative z-50">
         {showContact && (
           <div className=" fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-400 bg-opacity-75">
-            <div
-              // style={{
-              //   backgroundColor: "white",
-              //   padding: "30px 50px",
-              //   borderRadius: "5px",
-              //   // boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-              // }}
-            >
-              <form onSubmit={handleSubmit} className="animate-slideDown bg-white p-8 rounded-lg shadow-lg w-full max-w-xl">
+            <div>
+              <form
+                onSubmit={handleSubmit}
+                className="animate-slideDown bg-white p-8 rounded-lg shadow-lg w-full max-w-xl"
+              >
                 <div className="flex flex-col gap-4">
                   <div className="flex justify-end gap-5 font-semibold">
                     <button

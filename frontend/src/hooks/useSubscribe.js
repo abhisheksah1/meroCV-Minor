@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
+// Custom hook for handling subscription functionality
 function useSubscribe() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // State to manage loading status
 
+  // Function to handle subscription process
   const subscribe = async ({ email }) => {
-    setLoading(true);
+    setLoading(true); // Set loading state to true
 
     try {
       const response = await fetch("http://localhost:8000/api/subscribe/subscribe", {
@@ -18,7 +20,7 @@ function useSubscribe() {
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json(); // Parse response JSON
 
       if (response.ok) {
         toast.success(data.message); // Display success message
@@ -28,12 +30,13 @@ function useSubscribe() {
     } catch (error) {
       toast.error(error.message); // Display error message
     } finally {
-      setLoading(false);
+      setLoading(false); // Set loading state to false
     }
 
-    return false;
+    return false; // Return false to indicate failed subscription
   };
 
+  // Return the subscribe function and loading state
   return { subscribe, loading };
 }
 

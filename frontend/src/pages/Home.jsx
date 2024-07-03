@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import CvImage from "../assets/recume.png";
-import cv from "../assets/cvvv.png";
 import secontPortionImg from "../assets/secondPortionImg.png";
 import tailored from "../assets/tailored.png";
 import { Link } from "react-router-dom";
-import useSubscribe from "../hooks/useSubscribe";
-import toast from "react-hot-toast";
 
 import "../style/home.style.css";
 import DescriptionSection from "./Description Section/DescriptionSection.jsx";
 import Section5 from "../pages/Fifth Section/Section5.jsx";
 import MemberSection from "../pages/MemberSection.jsx";
+import Cta from "../components/CTA/Cta.jsx";
+import Feedback from "../components/feedback/FeedbackForm.jsx";
+import RenderFeedback from "../components/feedback/RenderFeedback.jsx"
+
+
+import { useLoginContext } from "../context/useContext.jsx";
 
 function Home() {
   const [currentImage, setCurrentImage] = useState(CvImage);
@@ -19,6 +22,9 @@ function Home() {
   const [templateOption2, setTemplateOption2] = useState(false);
   const [templateOption3, setTemplateOption3] = useState(false);
   const [token, setToken] = useState(null);
+
+  const { setShowFeedback } = useLoginContext();
+  const { setShowLogin } = useLoginContext();
 
   useEffect(() => {
     setToken(localStorage.getItem("user-token"));
@@ -56,26 +62,8 @@ function Home() {
     setTemplateOption(false);
   };
 
-  //subscribe for email
-
-  const [email, setEmail] = useState("");
-  const { loading, subscribe } = useSubscribe();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (loading) {
-      return;
-    }
-    await subscribe({
-      email: email,
-    });
-
-    setEmail("");
-  };
-
-  const handleSubscribe = () => {
-    // alert("please login");
-    toast.error("please login");
+  const feedHandler = (e) => {
+    setShowFeedback(true);
   };
 
   return (
@@ -83,7 +71,7 @@ function Home() {
       <div className="bg-gray-300">
         {/* Hero Section */}
 
-        <section className="grid gap-10 lg:grid-cols-2 md:items-center md:justify-center w-full mt-32">
+        <section className=" grid   grid-cols-1 gap-10 md:grid-cols-1 lg:grid-cols-2 md:items-center  w-full mt-32">
           <div className="md:text-center md:pr-10">
             <div>
               <p className="text-4xl md:text-5xl font-bold mb-3 md:mb-5">
@@ -115,21 +103,21 @@ function Home() {
           </div>
         </section>
 
-        <div className="flex justify-center items-center flex-col mt-28 text-5xl font-bold ">
+        <div className="flex justify-center  items-center flex-col mt-28 text-5xl font-bold ">
           <p className=" ">Land your dream job with the</p>
           <p> help of our resume builder</p>
         </div>
 
         {/* Tutorials Of resume  2nd Section */}
 
-        <div className="flex justify-around min-h-[50] mt-28 ml-40 ">
+        <div className="  flex justify-around md:flex-col lg:flex-row gap-6  md:items-center min-h-[50] mt-28  ">
           <img className="secondsectionImg" src={secontPortionImg} alt="" />
           <div className="flex flex-col gap-8 min-h-[50] justify-center  ">
             <div
               className="pl-20 bg-gray-200 pt-3 pb-3 pr-10 cursor-pointer rounded-md"
               onClick={() => handleImageChange(secontPortionImg)}
             >
-              <p className="text-2xl font-bold pb-3">
+              <p className="text-2xl font-bold pb-3 ">
                 Intuitive Resume Builder
               </p>
               <p>Build your resume easily with our step by step</p>
@@ -151,12 +139,12 @@ function Home() {
 
         {/* Selection Of Template 3rd Section */}
 
-        <div className="  min-h-[70vh] w-100vw">
-          <div className="pt-10 mt-28 flex flex-col gap-10">
-            <div className="detail text-4xl font-bold flex justify-center items-center">
+        <div className="">
+          <div className="pt-10 mt-28   gap-10">
+            <div className="detail text-4xl font-bold flex pb-10 justify-center items-center">
               <p>Every detail on your resume, built to perfection</p>
             </div>
-            <div className="selection-model flex justify-center gap-28 font-bold text-2xl ">
+            <div className="selection-model flex justify-center gap-28 pb-10 font-bold text-2xl ">
               <div className="text-gray-500 hover:text-gray-800">
                 <button onClick={handleTemplateOption}>EDUCATION</button>
               </div>
@@ -202,7 +190,7 @@ function Home() {
                       onMouseEnter={() => setHoveredImg(1)}
                       onMouseLeave={() => setHoveredImg(null)}
                     >
-                      <Link to="/login">
+                      <button onClick={setShowLogin}>
                         <img className="templateImg" src={CvImage} alt="" />
 
                         {hoveredImg === 1 && (
@@ -210,7 +198,7 @@ function Home() {
                             Use This Tempalte
                           </button>
                         )}
-                      </Link>
+                      </button>
                     </div>
                   )}
                   {token ? (
@@ -235,7 +223,7 @@ function Home() {
                       onMouseEnter={() => setHoveredImg(2)}
                       onMouseLeave={() => setHoveredImg(null)}
                     >
-                      <Link to="/login">
+                      <button onClick={setShowLogin}>
                         <img className="templateImg" src={CvImage} alt="" />
 
                         {hoveredImg === 2 && (
@@ -243,7 +231,7 @@ function Home() {
                             Use This Tempalte
                           </button>
                         )}
-                      </Link>
+                      </button>
                     </div>
                   )}
                   {token ? (
@@ -268,7 +256,7 @@ function Home() {
                       onMouseEnter={() => setHoveredImg(3)}
                       onMouseLeave={() => setHoveredImg(null)}
                     >
-                      <Link to="/login">
+                      <button onClick={setShowLogin}>
                         <img className="templateImg" src={CvImage} alt="" />
 
                         {hoveredImg === 3 && (
@@ -276,7 +264,7 @@ function Home() {
                             Use This Tempalte
                           </button>
                         )}
-                      </Link>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -311,7 +299,7 @@ function Home() {
                       onMouseEnter={() => setHoveredImg(1)}
                       onMouseLeave={() => setHoveredImg(null)}
                     >
-                      <Link to="/login">
+                      <button onClick={setShowLogin}>
                         <img className="templateImg" src={CvImage} alt="" />
 
                         {hoveredImg === 1 && (
@@ -319,7 +307,7 @@ function Home() {
                             Use This Tempalte
                           </button>
                         )}
-                      </Link>
+                      </button>
                     </div>
                   )}
                   {token ? (
@@ -344,7 +332,7 @@ function Home() {
                       onMouseEnter={() => setHoveredImg(2)}
                       onMouseLeave={() => setHoveredImg(null)}
                     >
-                      <Link to="/login">
+                      <button onClick={setShowLogin}>
                         <img className="templateImg" src={CvImage} alt="" />
 
                         {hoveredImg === 2 && (
@@ -352,7 +340,7 @@ function Home() {
                             Use This Tempalte
                           </button>
                         )}
-                      </Link>
+                      </button>
                     </div>
                   )}
                   {token ? (
@@ -377,7 +365,7 @@ function Home() {
                       onMouseEnter={() => setHoveredImg(3)}
                       onMouseLeave={() => setHoveredImg(null)}
                     >
-                      <Link to="/login">
+                      <button onClick={setShowLogin}>
                         <img className="templateImg" src={CvImage} alt="" />
 
                         {hoveredImg === 3 && (
@@ -385,7 +373,7 @@ function Home() {
                             Use This Tempalte
                           </button>
                         )}
-                      </Link>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -420,7 +408,7 @@ function Home() {
                       onMouseEnter={() => setHoveredImg(1)}
                       onMouseLeave={() => setHoveredImg(null)}
                     >
-                      <Link to="/login">
+                      <button onClick={setShowLogin}>
                         <img className="templateImg" src={CvImage} alt="" />
 
                         {hoveredImg === 1 && (
@@ -428,7 +416,7 @@ function Home() {
                             Use This Tempalte
                           </button>
                         )}
-                      </Link>
+                      </button>
                     </div>
                   )}
                   {token ? (
@@ -453,7 +441,7 @@ function Home() {
                       onMouseEnter={() => setHoveredImg(2)}
                       onMouseLeave={() => setHoveredImg(null)}
                     >
-                      <Link to="/login">
+                      <button onClick={setShowLogin}>
                         <img className="templateImg" src={CvImage} alt="" />
 
                         {hoveredImg === 2 && (
@@ -461,7 +449,7 @@ function Home() {
                             Use This Tempalte
                           </button>
                         )}
-                      </Link>
+                      </button>
                     </div>
                   )}
                   {token ? (
@@ -486,7 +474,7 @@ function Home() {
                       onMouseEnter={() => setHoveredImg(3)}
                       onMouseLeave={() => setHoveredImg(null)}
                     >
-                      <Link to="/login">
+                      <button onClick={setShowLogin}>
                         <img className="templateImg" src={CvImage} alt="" />
 
                         {hoveredImg === 3 && (
@@ -494,7 +482,7 @@ function Home() {
                             Use This Tempalte
                           </button>
                         )}
-                      </Link>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -529,7 +517,7 @@ function Home() {
                       onMouseEnter={() => setHoveredImg(1)}
                       onMouseLeave={() => setHoveredImg(null)}
                     >
-                      <Link to="/login">
+                      <button onClick={setShowLogin}>
                         <img className="templateImg" src={CvImage} alt="" />
 
                         {hoveredImg === 1 && (
@@ -537,7 +525,7 @@ function Home() {
                             Use This Tempalte
                           </button>
                         )}
-                      </Link>
+                      </button>
                     </div>
                   )}
                   {token ? (
@@ -562,7 +550,7 @@ function Home() {
                       onMouseEnter={() => setHoveredImg(2)}
                       onMouseLeave={() => setHoveredImg(null)}
                     >
-                      <Link to="/login">
+                      <button onClick={setShowLogin}>
                         <img className="templateImg" src={CvImage} alt="" />
 
                         {hoveredImg === 2 && (
@@ -570,7 +558,7 @@ function Home() {
                             Use This Tempalte
                           </button>
                         )}
-                      </Link>
+                      </button>
                     </div>
                   )}
                   {token ? (
@@ -595,7 +583,7 @@ function Home() {
                       onMouseEnter={() => setHoveredImg(3)}
                       onMouseLeave={() => setHoveredImg(null)}
                     >
-                      <Link to="/login">
+                      <button onClick={setShowLogin}>
                         <img className="templateImg" src={CvImage} alt="" />
 
                         {hoveredImg === 3 && (
@@ -603,7 +591,7 @@ function Home() {
                             Use This Tempalte
                           </button>
                         )}
-                      </Link>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -628,44 +616,30 @@ function Home() {
 
         {/* 5th section */}
 
-        <div className="mt-28 mb-10">
+        {/* <div className="mt-28 mb-10">
           <Section5 />
-        </div>
+        </div> */}
         {/* END of 5th section */}
 
-        <div>
-          <form onSubmit={handleSubmit}>
-            <h6 className="footer-title">Newsletter</h6>
-            <fieldset className="form-control w-80">
-              <label className="label">
-                <span className="label-text">Enter your email address</span>
-              </label>
-              <div className="join">
-                <input
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  placeholder="username@site.com"
-                  className="input input-bordered join-item"
-                  name="email"
-                  value={email}
-                  required
-                />
-                {token ? (
-                  <button type="submit" className="btn join-item btn-success">
-                    Subscribe
-                  </button>
-                ) : (
-                  <span
-                    className="btn join-item btn-success"
-                    onClick={handleSubscribe}
-                  >
-                    Subscribe
-                  </span>
-                )}
-              </div>
-            </fieldset>
-          </form>
+        {/* 
+        Feedback section */}
+
+        <Feedback />
+
+        
+
+        <div className="relative">
+          <button
+            className="text-xl btn fixed right-7 bottom-28 z-50"
+            onClick={feedHandler}
+          >
+            <i className="fa fa-commenting-o" aria-hidden="true"></i>
+          </button>
         </div>
+
+        <Cta />
+        < RenderFeedback />
+        
       </div>
     </>
   );

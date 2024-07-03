@@ -120,8 +120,7 @@ export async function register(req, res) {
       </html>
       `,
     };
-    
-    
+
     // Send the registration email
     transporter.sendMail(mailOptions, (err, info) => {
       if (err) {
@@ -214,7 +213,6 @@ export async function forgetPassword(req, res) {
   try {
     const { email } = req.body;
 
-
     // Find the user by email
     const user = await User.findOne({ email });
 
@@ -226,7 +224,6 @@ export async function forgetPassword(req, res) {
     // Generate a unique JWT token for the user that contains the user's id
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "5m", // Set the expiration time to 5 minutes
-      
     });
 
     // Email configuration
@@ -243,9 +240,9 @@ export async function forgetPassword(req, res) {
         <p>If you didn't request a password reset, please ignore this email.</p>
         <p style="margin-top: 30px; font-size: 0.8em; color: #666666; text-align: center;">Thank you!</p>
         <p style="font-size: 0.8em; color: #666666; text-align: center;">MeroCV Support Team</p>
-      </div>`
+      </div>`,
     };
-    
+
     // Create a transporter for sending emails
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -275,7 +272,6 @@ export async function forgetPassword(req, res) {
     res.status(500).send({ message: "Internal server error" });
   }
 }
-
 
 //reset-password logic
 
@@ -310,3 +306,35 @@ export async function resetPassword(req, res) {
     res.status(500).send({ message: err.message });
   }
 }
+
+export async function UpdateUser(req, res) {
+  const userId = req.params.id;
+  const { fullName, username, email } = req.body;
+
+  try {
+    const updateUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        fullName,
+        username,
+        email,
+      },
+      { new: true }
+    );
+
+    if (!updateUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "Profile updated successfully", updateUser });
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    res.status(500).json({ message: "Server error", error });
+  }
+}
+
+//to render username in frontend
+
+
+
+

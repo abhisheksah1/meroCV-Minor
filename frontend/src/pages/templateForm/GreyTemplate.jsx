@@ -9,175 +9,195 @@ import Skills from "../../components/createTempleteForm/Skills";
 import toast from "react-hot-toast";
 
 function GreyTemplate() {
-  const userId = localStorage.getItem("userId");
-  const [aboutInfo, setAboutInfo] = useState({
-    firstName: "",
-    lastName: "",
+ // Retrieve user ID from local storage
+const userId = localStorage.getItem("userId");
+
+// State to store user's personal information
+const [aboutInfo, setAboutInfo] = useState({
+  firstName: "",
+  lastName: "",
+  email: "",
+  middleName: "",
+  site: "",
+  title: "",
+  linkedIn: "",
+  address: "",
+  summary: "",
+  country: "",
+  phone: "",
+});
+
+// State to store user's work experience
+const [workExperience, setWorkExperience] = useState([
+  {
+    company: "",
+    position: "",
+    startDate: "",
+    endDate: "",
+    description: "",
+  },
+]);
+
+// State to store user's education details
+const [education, setEducation] = useState([
+  {
+    school: "",
+    collage: "",
+    university: "",
+    schoolStartDate: "",
+    schoolEndDate: "",
+    collageStartDate: "",
+    collageEndDate: "",
+    universityStartDate: "",
+    universityEndDate: "",
+    schoolDegree: "",
+    collageDegree: "",
+    universityDegree: "",
+  },
+]);
+
+// State to store user's skills
+const [skills, setSkills] = useState([
+  {
+    skill: "",
+  },
+]);
+
+// State to store user's languages
+const [languages, setLanguages] = useState([
+  {
+    language: "",
+  },
+]);
+
+// State to store user's projects
+const [projects, setProjects] = useState([
+  {
+    name: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+  },
+]);
+
+// State to store user's references
+const [references, setReferences] = useState([
+  {
+    name: "",
+    position: "",
+    company: "",
+    contact: "",
     email: "",
-    middleName: "",
-    site: "",
-    title: "",
-    linkedIn: "",
-    address: "",
-    summary: "",
-    country: "",
-    phone: "",
-  });
+  },
+]);
 
-  const [workExperience, setWorkExperience] = useState([
-    {
-      company: "",
-      position: "",
-      startDate: "",
-      endDate: "",
-      description: "",
-    },
-  ]);
+// Function to handle changes in work experience fields
+const onWorkExperienceChange = (index, name, value) => {
+  setWorkExperience((prevState) =>
+    prevState.map((item, i) =>
+      i === index ? { ...item, [name]: value } : item
+    )
+  );
+};
 
-  const [education, setEducation] = useState([
-    {
-      school: "",
-      collage: "",
-      university: "",
-      schoolStartDate: "",
-      schoolEndDate: "",
-      collageStartDate: "",
-      collageEndDate: "",
-      universityStartDate: "",
-      universityEndDate: "",
-      schoolDegree: "",
-      collageDegree: "",
-      universityDegree: "",
-    },
-  ]);
-  const [skills, setSkills] = useState([
-    {
-      skill: "",
-    },
-  ]);
+// Function to handle changes in education fields
+const onEducationChange = (index, name, value) => {
+  setEducation((prevState) =>
+    prevState.map((item, i) =>
+      i === index ? { ...item, [name]: value } : item
+    )
+  );
+};
 
-  const [languages, setLanguages] = useState([
-    {
-      language: "",
-    },
-  ]);
+// Function to handle changes in skills fields
+const onSkillsChange = (index, name, value) => {
+  setSkills((prevState) =>
+    prevState.map((item, i) =>
+      i === index ? { ...item, [name]: value } : item
+    )
+  );
+};
 
-  const [projects, setProjects] = useState([
-    {
-      name: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-    },
-  ]);
+// Function to handle changes in languages fields
+const onLanguagesChange = (index, name, value) => {
+  setLanguages((prevState) =>
+    prevState.map((item, i) =>
+      i === index ? { ...item, [name]: value } : item
+    )
+  );
+};
 
-  const [references, setReferences] = useState([
-    {
-      name: "",
-      position: "",
-      company: "",
-      contact: "",
-      email: "",
-    },
-  ]);
+// Function to handle changes in projects fields
+const onProjectsChange = (index, name, value) => {
+  setProjects((prevState) =>
+    prevState.map((item, i) =>
+      i === index ? { ...item, [name]: value } : item
+    )
+  );
+};
 
-  const onWorkExperienceChange = (index, name, value) => {
-    setWorkExperience((prevState) =>
-      prevState.map((item, i) =>
-        i === index ? { ...item, [name]: value } : item
-      )
-    );
+// Function to handle changes in references fields
+const onReferencesChange = (index, name, value) => {
+  setReferences((prevState) =>
+    prevState.map((item, i) =>
+      i === index ? { ...item, [name]: value } : item
+    )
+  );
+};
+
+// Function to handle form submission
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  // Prepare data to be sent to the server
+  const data = {
+    userId: userId,
+    aboutInfo,
+    workExperience,
+    education,
+    skills,
+    languages,
+    projects,
+    references,
   };
 
-  const onEducationChange = (index, name, value) => {
-    setEducation((prevState) =>
-      prevState.map((item, i) =>
-        i === index ? { ...item, [name]: value } : item
-      )
-    );
-  };
+  try {
+    // Send data to the server using a POST request
+    const response = await fetch("http://localhost:8000/api/cv/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-  const onSkillsChange = (index, name, value) => {
-    setSkills((prevState) =>
-      prevState.map((item, i) =>
-        i === index ? { ...item, [name]: value } : item
-      )
-    );
-  };
-
-  const onLanguagesChange = (index, name, value) => {
-    setLanguages((prevState) =>
-      prevState.map((item, i) =>
-        i === index
-          ? {
-              ...item,
-              [name]: value,
-            }
-          : item
-      )
-    );
-  };
-
-  const onProjectsChange = (index, name, value) => {
-    setProjects((prevState) =>
-      prevState.map((item, i) =>
-        i === index ? { ...item, [name]: value } : item
-      )
-    );
-  };
-
-  const onReferencesChange = (index, name, value) => {
-    setReferences((prevState) =>
-      prevState.map((item, i) =>
-        i === index ? { ...item, [name]: value } : item
-      )
-    );
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const data = {
-      userId: userId,
-      aboutInfo,
-      workExperience,
-      education,
-      skills,
-      languages,
-      projects,
-      references,
-    };
-
-    try {
-      const response = await fetch("http://localhost:8000/api/cv/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const data2 = await response.json();
-      if (response.ok) {
-        toast.success("Successfully created");
-        setTimeout(() => {
-          window.location.href = "/templateDesign";
-        }, 1000);
-      } else {
-        throw new Error(data2.message || "failed");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error(error.message);
+    // Handle server response
+    const data2 = await response.json();
+    if (response.ok) {
+      // Show success message and redirect to template design page
+      toast.success("Successfully created");
+      setTimeout(() => {
+        window.location.href = "/templateDesign";
+      }, 1000);
+    } else {
+      // Throw an error if the response is not okay
+      throw new Error(data2.message || "failed");
     }
-  };
+  } catch (error) {
+    // Log and display the error
+    console.error(error);
+    toast.error(error.message);
+  }
+};
+
 
   return (
-    <div className=" bg-white">
+    <div className=" mt-20">
       <form action="/resume-builder" method="post">
-        <div className="bg-gray-300 h-10 max-w-[70vw] mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
+        <div className="bg-gray-500 h-10 max-w-[70vw] mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
           <p>ABOUT SECTION</p>
         </div>
-        <div className="border p-10 flex flex-col gap-4 justify-between items-center max-w-[70vw] mx-auto ">
+        <div className="border p-10 flex  flex-col gap-4 justify-between items-center max-w-[70vw] mx-auto ">
           <div className="flex flex-wrap gap-4 ">
             <div className="w-full lg:w-auto">
               <label className="input input-bordered flex items-center gap-2">
@@ -341,7 +361,7 @@ function GreyTemplate() {
             </div>
           </div>
         </div>
-        <div className="bg-gray-300 h-10 max-w-[70vw] mt-10 mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
+        <div className="bg-gray-500 h-10 max-w-[70vw] mt-10 mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
           <p>WORK EXPERIENCE</p>
         </div>
         {workExperience.map((item, index) => (
@@ -373,7 +393,7 @@ function GreyTemplate() {
             ➕
           </button>
         </div>
-        <div className="bg-gray-300 h-10 max-w-[70vw] mt-10 mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
+        <div className="bg-gray-500 h-10 max-w-[70vw] mt-10 mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
           <p>EDUCATION</p>
         </div>
         {education.map((item, index) => (
@@ -385,7 +405,7 @@ function GreyTemplate() {
             }
           />
         ))}
-        <div className="bg-gray-300 h-10 max-w-[70vw] mt-10 mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
+        <div className="bg-gray-500 h-10 max-w-[70vw] mt-10 mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
           <p>SKILLS</p>
         </div>
         {skills.map((item, index) => (
@@ -411,7 +431,7 @@ function GreyTemplate() {
             ➕
           </button>
         </div>
-        <div className="bg-gray-300 h-10 max-w-[70vw] mt-10 mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
+        <div className="bg-gray-500 h-10 max-w-[70vw] mt-10 mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
           <p>LANGUAGES</p>
         </div>
         {languages.map((item, index) => (
@@ -439,7 +459,7 @@ function GreyTemplate() {
             ➕
           </button>
         </div>
-        <div className="bg-gray-300 h-10 max-w-[70vw] mt-10 mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
+        <div className="bg-gray-500 h-10 max-w-[70vw] mt-10 mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
           <p>PROJECTS</p>
         </div>
         {projects.map((item, index) => (
@@ -471,7 +491,7 @@ function GreyTemplate() {
           </button>
         </div>
 
-        <div className="bg-gray-300 h-10 max-w-[70vw] mt-10 mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
+        <div className="bg-gray-500 h-10 max-w-[70vw] mt-10 mx-auto mb-5 items-center flex text-lg pl-5 font-semibold">
           <p>REFERENCES</p>
         </div>
         {references.map((item, index) => (
@@ -503,9 +523,9 @@ function GreyTemplate() {
             ➕
           </button>
         </div>
-        <div className="mt-5 max-w-[70vw] mx-auto ]">
+        {/* <div className="mt-5 max-w-[70vw] mx-auto ]">
           <hr />
-        </div>
+        </div> */}
 
         <div className="flex justify-center items-center mb-20 mt-10 ">
           <button

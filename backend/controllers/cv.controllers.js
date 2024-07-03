@@ -4,6 +4,9 @@ import mongoose from "mongoose";
 
 const router = express.Router();
 
+// save the cv 
+
+
 // Get all CVs
 router.get("/", async (req, res) => {
   try {

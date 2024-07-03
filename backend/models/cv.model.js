@@ -6,6 +6,9 @@ const cvSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     }, // Corrected field name
+    image: {
+      type: String,
+    },
     aboutInfo: {
       type: {
         firstName: String,

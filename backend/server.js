@@ -6,18 +6,14 @@ import express from "express"; // Import Express web framework
 import databaseConnection from "./database/databaseConn.js"; // Import database connection function
 import cors from "cors"; // Import CORS middleware for enabling Cross-Origin Resource Sharing
 
-
 //  Import user routes
-import registerRoutes from "./routes/user.routes.js"; 
-import cvRoutes from "./controllers/cv.controllers.js"
-import contactRoutes from "./routes/contact.routes.js"
-import subscribeRoute from"./routes/sunscribe.routes.js"
-import adminRoutes from "./routes/admin.routes.js"
-<<<<<<< HEAD
-=======
-
->>>>>>> 15a2524b3fa4966c4817fe7757e806ffb5c8fbc4
-
+import registerRoutes from "./routes/user.routes.js";
+import cvRoutes from "./controllers/cv.controllers.js";
+import contactRoutes from "./routes/contact.routes.js";
+import subscribeRoute from "./routes/sunscribe.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
+import feedbackRoutes from "./controllers/feedback.controllers.js";
+import adminRoutess from "./routes/adminUser.routes.js"
 
 
 const app = express(); // Create an Express application
@@ -38,10 +34,8 @@ app.use("/api/cv", cvRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/subscribe", subscribeRoute);
 app.use("/api/admin", adminRoutes);
-
-
-
-
+app.use("/api/feedback", feedbackRoutes);
+app.use("/api/adminUser", adminRoutess);
 
 
 

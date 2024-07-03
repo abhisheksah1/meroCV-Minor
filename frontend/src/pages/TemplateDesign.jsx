@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import Profile from "../assets/abhishek.jpg";
+// import Profile from "../assets/abhishek.jpg";
 import "../../src/style/template.style.css";
-import html2canvas from "html2canvas";
+
 import jsPDF from "jspdf";
+import domtoimage from "dom-to-image";
+
+
+
 import axios from "axios";
-import html2pdf from "html2pdf.js";
 
 function TemplateDesign() {
   const userId = localStorage.getItem("userId");
@@ -33,21 +36,26 @@ function TemplateDesign() {
         console.log(error);
       });
   }, [userId]);
-  // Add userId as a dependency to re-run the effect when it changes
 
-  // Function to generate PDF
-  // Function to generate PDF
+
+  
+
   const generatePDF = () => {
-    const content = contentRef.current; // Reference to the container element
-    const opt = {
-      margin: 1,
-      filename: "eport.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-    };
-    html2pdf().from(content).set(opt).save();
+    const input = contentRef.current;
+    domtoimage.toPng(input)
+      .then((imgData) => {
+        const pdf = new jsPDF('p', 'cm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (input.offsetHeight * pdfWidth) / input.offsetWidth;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('resume.pdf');
+      })
+      .catch((error) => {
+        console.error('Error generating PDF:', error);
+      });
   };
+
   return (
     <>
       <div className="flex justify-end mt-3 pr-10">
@@ -55,6 +63,7 @@ function TemplateDesign() {
           <i
             className="fa fa-download text-2xl cursor-pointer"
             aria-hidden="true"
+            onClick={generatePDF}
           ></i>
         </a>
       </div>
@@ -63,7 +72,7 @@ function TemplateDesign() {
           <div className="left_side">
             <div className="profileText">
               <div className="imgBox ">
-                <img className="rounded-[50%]" src={Profile} />
+                {/* <img className="rounded-[50%]"  /> */}
               </div>
             </div>
             <div className="contactSection ">
@@ -247,14 +256,7 @@ function TemplateDesign() {
             </div>
           </div>
         </div>
-        <div className="flex float-end gap-5 mt-5 mb-20">
-          <button className="btn" onClick={generatePDF}>
-            Download
-          </button>
-          <button className="btn" onClick={() => window.print()}>
-            Print
-          </button>
-        </div>
+       
       </div>
     </>
   );

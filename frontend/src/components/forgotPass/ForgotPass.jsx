@@ -3,50 +3,51 @@ import { useLoginContext } from "../../context/useContext";
 import Toast from "react-hot-toast";
 
 function ForgotPass() {
-  const { setShowLogin, showReset, setShowReset } = useLoginContext();
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { setShowLogin, showReset, setShowReset } = useLoginContext(); // Destructuring values from the login context
+const [email, setEmail] = useState(""); // Initializing state for email input
+const [loading, setLoading] = useState(false); // Initializing state for loading indicator
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!email) {
-      Toast.error("Please fill the email input");
-      return;
-    }
-    setLoading(true);
-    try {
-      const response = await fetch(
-        "http://localhost:8000/api/user/forgotPassword",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-          }),
-        }
-      );
-
-      const data = await response.json();
-      if (response.ok) {
-        Toast.success("Check your email to reset your password");
-        setShowReset(true); // Update state to indicate email sent
-      } else {
-        Toast.error(data.message || "User not found");
+const handleSubmit = async (e) => {
+  e.preventDefault(); // Prevent default form submission behavior
+  if (!email) { // Check if email is empty
+    Toast.error("Please fill the email input"); // Show error message if email is empty
+    return;
+  }
+  setLoading(true); // Set loading state to true to show loading indicator
+  try {
+    const response = await fetch( // Send a POST request to the server to request password reset
+      "http://localhost:8000/api/user/forgotPassword",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+        }),
       }
-    } catch (error) {
-      console.log(error);
-      Toast.error("An error occurred. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    );
 
-  const backhandler = () => {
-    setShowReset(false);
-    setShowLogin(true);
-  };
+    const data = await response.json(); // Parse the response JSON
+    if (response.ok) { // If the request was successful (status code 2xx)
+      Toast.success("Check your email to reset your password"); // Show success message
+      setShowReset(true); // Update state to indicate email sent
+    } else {
+      Toast.error(data.message || "User not found"); // Show error message received from the server or a default message
+    }
+  } catch (error) {
+    console.log(error); // Log any errors that occur
+    Toast.error("An error occurred. Please try again later."); // Show a generic error message
+  } finally {
+    setLoading(false); // Set loading state to false when the request is complete (whether successful or not)
+  }
+};
+
+const backhandler = () => {
+  setShowReset(false); // Reset the state to hide the password reset form
+  setShowLogin(true); // Show the login form
+};
+
 
   return (
     showReset && (
