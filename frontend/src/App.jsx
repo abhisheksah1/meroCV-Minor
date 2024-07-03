@@ -96,15 +96,18 @@ const AnimatedRoute = ({ children }) => {
 
   return (
     <motion.div
-      key={location.pathname}
-      initial={{ x: "-100vw", opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      exit={{ x: "100vw", opacity: 0 }}
-      transition={{ duration: 0.9 }}
-    >
-      {children}
-    </motion.div>
+    key={location.pathname}
+    initial={{ x: "-100vw", opacity: 0 }}
+    animate={{ x: 0, opacity: 1 }}
+    exit={{ x: "100vw", opacity: 0 }}
+    transition={{ duration: 0.8, ease: "backOut" }}
+  >
+    {children}
+  </motion.div>
   );
 };
+
+
+
 
 export default App;

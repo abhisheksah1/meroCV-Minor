@@ -37,6 +37,7 @@ function useSignin() {
       if (response.ok) {
         localStorage.setItem("user-token", data.user.token);
         localStorage.setItem("userId", data.user.id);
+        localStorage.setItem("fullName", data.user.fullName);
         toast.success("Login successful");
 
         // Redirect to the home page after a delay of 1000 milliseconds

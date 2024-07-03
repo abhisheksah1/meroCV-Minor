@@ -13,8 +13,8 @@ import contactRoutes from "./routes/contact.routes.js";
 import subscribeRoute from "./routes/sunscribe.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import feedbackRoutes from "./controllers/feedback.controllers.js";
-import adminRoutess from "./routes/adminUser.routes.js"
-
+import adminRoutess from "./routes/adminUser.routes.js";
+import path from "path";
 
 const app = express(); // Create an Express application
 const PORT = process.env.PORT || 5000; // Set the port from environment variables or default to 5000
@@ -27,6 +27,7 @@ app.use(express.json());
 
 // Middleware to enable CORS
 app.use(cors());
+const __dirname = path.resolve();
 
 // Register user routes
 app.use("/api/user", registerRoutes);
@@ -37,7 +38,10 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/adminUser", adminRoutess);
 
-
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+});
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => {
