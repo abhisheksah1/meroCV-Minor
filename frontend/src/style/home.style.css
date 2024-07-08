@@ -1,9 +1,18 @@
 .heroSectionBtn {
-    @apply pl-5 pr-5 pb-3 pt-3 ;
-  /* @apply sm:pl-6 sm:pr-6 sm:pb-5 sm:pt-5; */
+    @apply md:pl-5 lg:pr-5 lg:pb-3 lg:pt-3 ;
+  @apply sm:pl-10 sm:pr-10 sm:pb-5 sm:pt-5;
    @apply bg-gray-800 text-white font-semibold; 
-   @apply rounded-tl-3xl rounded-tr-3xl rounded-bl-3xl;
+   @apply rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl;
    @apply hover:bg-white hover:text-black transition duration-300;
+   
+}
+.heroSectionBtns {
+    @apply md:pl-5 lg:pr-5 lg:pb-3 lg:pt-3 ;
+  @apply sm:pl-10 sm:pr-10 sm:pb-5 sm:pt-5;
+   @apply bg-white text-black font-semibold; 
+   @apply rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl;
+   @apply hover:bg-gray-800 hover:text-white transition duration-300;
+   
 }
 
 .btn2{

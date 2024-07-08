@@ -312,6 +312,19 @@ export async function UpdateUser(req, res) {
   const { fullName, username, email } = req.body;
 
   try {
+    // Check if the username already exists and is not the current user
+    const existingUsername = await User.findOne({ username, _id: { $ne: userId } });
+    if (existingUsername) {
+      return res.status(400).json({ message: "Username already in use" });
+    }
+
+    // Check if the email already exists and is not the current user
+    const existingEmail = await User.findOne({ email, _id: { $ne: userId } });
+    if (existingEmail) {
+      return res.status(400).json({ message: "Email already in use" });
+    }
+
+    // Proceed with updating the user
     const updateUser = await User.findByIdAndUpdate(
       userId,
       {
@@ -328,7 +341,7 @@ export async function UpdateUser(req, res) {
 
     res.json({ message: "Profile updated successfully", updateUser });
   } catch (error) {
-    console.error("Error updating user profile:", error);
+   
     res.status(500).json({ message: "Server error", error });
   }
 }

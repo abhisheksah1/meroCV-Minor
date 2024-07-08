@@ -10,8 +10,7 @@ import Section5 from "../pages/Fifth Section/Section5.jsx";
 import MemberSection from "../pages/MemberSection.jsx";
 import Cta from "../components/CTA/Cta.jsx";
 import Feedback from "../components/feedback/FeedbackForm.jsx";
-import RenderFeedback from "../components/feedback/RenderFeedback.jsx"
-
+import RenderFeedback from "../components/feedback/RenderFeedback.jsx";
 
 import { useLoginContext } from "../context/useContext.jsx";
 
@@ -74,10 +73,10 @@ function Home() {
         <section className=" grid   grid-cols-1 gap-10 md:grid-cols-1 lg:grid-cols-2 md:items-center  w-full mt-32">
           <div className="md:text-center md:pr-10">
             <div>
-              <p className="text-4xl md:text-5xl font-bold mb-3 md:mb-5">
+              <p className="lg:text-4xl md:text-5xl font-bold mb-3 md:mb-5">
                 Build a professional resume for free
               </p>
-              <p className="text-lg md:text-2x">
+              <p className="lg:text-xl  sm:text-3xl">
                 Build beautiful, recruiter-tested resumes in a few clicks!
                 <br />
                 Our resume builder is powerful and easy to use, with
@@ -88,24 +87,33 @@ function Home() {
                 chances and rise above the competition.
               </p>
             </div>
-            <div className="flex gap-5 justify-center mt-3 md:mt-5">
-              <Link to="/cvtemp" className="heroSectionBtn">
+            <div className="flex lg:flex-row   gap-5 justify-center mt-3 md:mt-5 ">
+              <Link
+                to="/cvtemp"
+                className="heroSectionBtn lg:text-sm sm:text-2xl sm:mt-3 sm:mb-3"
+              >
                 Try for Free
+              </Link>
+              <Link
+                to="/cvtemp"
+                className="heroSectionBtns lg:text-sm sm:text-2xl sm:mt-3 sm:mb-3"
+              >
+                Exiting Resume
               </Link>
             </div>
           </div>
           <div className="flex justify-center">
             <img
-              className="w-full md:max-w-lg rounded-lg"
+              className="lg:w-full sm:max-w-lg  rounded-lg"
               src={tailored}
               alt="Resume Preview"
             />
           </div>
         </section>
 
-        <div className="flex justify-center  items-center flex-col mt-28 text-5xl font-bold ">
-          <p className=" ">Land your dream job with the</p>
-          <p> help of our resume builder</p>
+        <div className="flex justify-center items-center flex-col mt-28 text-center text-4xl font-bold">
+          <p className="text-shadow-lg">Land your dream job with the</p>
+          <p className="text-shadow-lg">help of our resume builder</p>
         </div>
 
         {/* Tutorials Of resume  2nd Section */}
@@ -626,8 +634,6 @@ function Home() {
 
         <Feedback />
 
-        
-
         <div className="relative">
           <button
             className="text-xl btn fixed right-7 bottom-28 z-50"
@@ -638,8 +644,7 @@ function Home() {
         </div>
 
         <Cta />
-        < RenderFeedback />
-        
+        <RenderFeedback />
       </div>
     </>
   );
